@@ -1,0 +1,128 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>다음 지도 API</title>
+</head>
+<body>
+	<div id="map" style="width:100%;height:100vh;"></div>
+
+	<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=70733405af364b15c8f3fdbc3b393a41&libraries=clusterer"></script>
+	<script>
+		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+		    mapOption = {
+		        center: new kakao.maps.LatLng(37.56325, 126.98746), // 지도의 중심좌표
+		        level: 12, // 지도의 확대 레벨
+		        mapTypeId : kakao.maps.MapTypeId.ROADMAP // 지도종류
+		    }; 
+
+		// 지도를 생성한다 
+		var map = new kakao.maps.Map(mapContainer, mapOption);
+		    // 마커 클러스터러를 생성합니다 
+		var clusterer = new kakao.maps.MarkerClusterer({
+        	map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
+        	averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
+        	minLevel: 10 // 클러스터 할 최소 지도 레벨 
+    	}); 
+
+		var 데이터 = [
+			[37.576841, 126.830719,'<div style="padding:5px;"> 승차검진(마곡) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'], //마곡
+			[35.239283, 129.014696,'<div style="padding:5px;"> 승차검진(부산북구) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'], //부산북구
+			[35.164272, 129.178660,'<div style="padding:5px;"> 승차검진(해운대구) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[35.832425, 128.757618,'<div style="padding:5px;"> 승차검진(영남대) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[35.956893, 128.564379,'<div style="padding:5px;"> 승차검진(칠곡 경북대) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[35.859838, 128.540649,'<div style="padding:5px;"> 승차검진(대구 의료원) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[35.828717, 128.692583,'<div style="padding:5px;"> 승차검진(대구 스타디움) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[36.348225, 127.435793,'<div style="padding:5px;"> 승차검진(대전 한국병원) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[36.358108, 127.335435,'<div style="padding:5px;"> 승차검진(유성구보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[35.569492, 129.350395,'<div style="padding:5px;"> 승차검진(울산중구보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[36.605565, 127.296382,'<div style="padding:5px;"> 승차검진(세종시보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[37.429806, 126.987015,'<div style="padding:5px;"> 승차검진(과천시보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[37.640925, 126.660249,'<div style="padding:5px;"> 승차검진(김포뉴고려병원) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[37.319269, 126.812173,'<div style="padding:5px;"> 승차검진(안산단원보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[37.129042, 126.904697,'<div style="padding:5px;"> 승차검진(화성시보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[36.488172, 127.715842,'<div style="padding:5px;"> 승차검진(보은군보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[37.149024, 128.215719,'<div style="padding:5px;"> 승차검진(제천시보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[36.588251, 127.505999,'<div style="padding:5px;"> 승차검진(상당보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[36.630124, 127.426543,'<div style="padding:5px;"> 승차검진(흥덕보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[36.637607, 127.470197,'<div style="padding:5px;"> 승차검진(서원보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[36.710303, 127.430923,'<div style="padding:5px;"> 승차검진(청원보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[36.640162, 127.473143,'<div style="padding:5px;"> 승차검진(청주의료원) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[36.979530, 127.970242,'<div style="padding:5px;"> 승차검진(충주의료원) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[36.970886, 127.927831,'<div style="padding:5px;"> 승차검진(충주시보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[36.808022, 127.796635,'<div style="padding:5px;"> 승차검진(괴산군보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[36.457045, 127.120743,'<div style="padding:5px;"> 승차검진(공주시보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[36.324355, 126.602232,'<div style="padding:5px;"> 승차검진(보령시보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[35.865396, 127.147960,'<div style="padding:5px;"> 승차검진(호성전주병원) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[34.980932, 127.583630,'<div style="padding:5px;"> 승차검진(광양시보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[35.216019, 127.461033,'<div style="padding:5px;"> 승차검진(구례군보건의료원) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[34.990114, 126.480925,'<div style="padding:5px;"> 승차검진(무안군보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[34.759371, 127.660508,'<div style="padding:5px;"> 승차검진(여수시보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[35.274457, 126.504166,'<div style="padding:5px;"> 승차검진(영광군보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[34.795514, 126.703984,'<div style="padding:5px;"> 승차검진(영암군보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[34.570473, 126.612232,'<div style="padding:5px;"> 승차검진(해남군보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[35.062347, 126.524281,'<div style="padding:5px;"> 승차검진(함평군보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[34.336272, 126.731315,'<div style="padding:5px;"> 승차검진(완도군보건의료원) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[35.304479, 126.782611,'<div style="padding:5px;"> 승차검진(장성군보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[34.480302, 126.263041,'<div style="padding:5px;"> 승차검진(진도군보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[36.139520, 128.112921,'<div style="padding:5px;"> 승차검진(김천시보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[36.596180, 128.197505,'<div style="padding:5px;"> 승차검진(문경시보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[36.890497, 128.742096,'<div style="padding:5px;"> 승차검진(봉화군보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[36.418147, 129.367693,'<div style="padding:5px;"> 승차검진(영덕군보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[35.992412, 129.396315,'<div style="padding:5px;"> 승차검진(포항시 남구보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[36.595950, 128.199070,'<div style="padding:5px;"> 승차검진(문경중앙병원) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[36.135382, 128.118878,'<div style="padding:5px;"> 승차검진(김천제일병원) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[35.232352, 128.870935,'<div style="padding:5px;"> 승차검진(김해시보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[35.543584, 128.490285,'<div style="padding:5px;"> 승차검진(창녕군보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[35.214615, 128.122961,'<div style="padding:5px;"> 승차검진(진주시보건소) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+			[35.167018, 128.128704,'<div style="padding:5px;"> 승차검진(진주한일병원) <br><a href="https://www.mohw.go.kr/react/popup_200128_3.html" style="color:red" target="_blank">가까운 선별진료소</a> <a href="https://korean.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" style="color:blue" target="_blank">증상 체크</a></div>'],
+
+
+
+
+		];
+
+		var markers=[];
+		var iwRemoveable = true;
+		
+		for (var i=0; i<데이터.length; i++) 
+		{
+			var marker = new kakao.maps.Marker({
+    			position: new kakao.maps.LatLng(데이터[i][0], 데이터[i][1]),
+				map: map
+
+			});
+
+			
+    		
+
+			// 인포윈도우를 생성합니다
+			var infowindow = new kakao.maps.InfoWindow({
+    		//position : iwPosition, 
+    			content : 데이터[i][2],
+				removable : iwRemoveable
+			});
+  
+			// 마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
+			//infowindow.open(map, marker); //처음엔 다 뜨게 함 
+			markers.push(marker);
+
+			kakao.maps.event.addListener(
+				marker, 'click', makeOverListener(map, marker, infowindow)
+				);
+    		
+
+		}
+		// 클러스터러에 마커들을 추가합니다
+        clusterer.addMarkers(markers);
+
+		// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
+		function makeOverListener(map, marker, infowindow) {
+    	return function() {
+        infowindow.open(map, marker);
+    		};
+		}
+
+
+	</script>
+</body>
+</html>
